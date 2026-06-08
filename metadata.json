@@ -1,0 +1,8 @@
+{
+  "name": "EQI IT Support Portal",
+  "description": "Customer support portal to receive requests and store them securely.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

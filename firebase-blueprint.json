@@ -1,0 +1,26 @@
+{
+  "entities": {
+    "CustomerRequest": {
+      "title": "CustomerRequest",
+      "description": "A customer support request",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Customer name" },
+        "email": { "type": "string", "description": "Customer email" },
+        "subject": { "type": "string", "description": "Request subject" },
+        "message": { "type": "string", "description": "Request message" },
+        "status": { "type": "string", "enum": ["pending", "in-progress", "resolved"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["name", "email", "subject", "message", "status", "createdAt", "updatedAt", "ownerId"]
+    }
+  },
+  "firestore": {
+    "/requests/{requestId}": {
+      "schema": { "$ref": "#/entities/CustomerRequest" },
+      "description": "Customer support requests"
+    }
+  }
+}

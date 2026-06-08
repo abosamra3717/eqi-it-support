@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidCustomerRequest(data) {
+      return data.keys().hasAll(['name', 'email', 'phone', 'organization', 'subject', 'message', 'status', 'seqId'])
+        && data.name is string && data.name.size() > 0
+        && data.email is string && data.email.size() > 0
+        && data.phone is string
+        && data.organization is string
+        && data.subject is string && data.subject.size() > 0
+        && data.message is string && data.message.size() > 0
+        && data.seqId is string && data.seqId.size() > 0
+        && data.status == 'pending';
+    }
+
+    match /requests/{requestId} {
+      allow create: if isValidCustomerRequest(incoming());
+      allow read: if true;
+      allow update, delete: if false;
+    }
+  }
+}
